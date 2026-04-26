@@ -1,0 +1,27 @@
+{
+  "name": "bridge-editor",
+  "version": "1.0.0",
+  "description": "Sync navigation, zoom and cursor between Яндекс.НК and Nakarte.me",
+  "scripts": {
+    "dev": "wxt",
+    "dev:firefox": "wxt -b firefox",
+    "build": "wxt build",
+    "build:firefox": "wxt build -b firefox",
+    "pack": "wxt zip",
+    "compile": "tsc --noEmit",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/chrome": "^0.1.40",
+    "eslint": "^10.2.1",
+    "globals": "^17.5.0",
+    "typescript": "latest",
+    "typescript-eslint": "^8.59.0",
+    "vitest": "^4.1.5",
+    "wxt": "latest"
+  }
+}

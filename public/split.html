@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bridge Editor</title>
+    <style>
+      *, *::before, *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      html, body {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background: #111;
+      }
+      .container {
+        display: flex;
+        width: 100%;
+        height: 100%;
+      }
+      iframe {
+        height: 100%;
+        border: none;
+        min-width: 120px;
+        flex-shrink: 0;
+      }
+      #master { flex: 1; }
+      #slave  { flex: 1; }
+
+      .divider {
+        width: 6px;
+        background: #2a2a2a;
+        cursor: col-resize;
+        flex-shrink: 0;
+        position: relative;
+        transition: background 0.15s;
+        z-index: 10;
+      }
+      .divider::after {
+        content: '';
+        position: absolute;
+        inset: 0 -6px;
+      }
+      .divider:hover,
+      .divider.dragging {
+        background: #555;
+      }
+      .dragging-guard {
+        display: none;
+        position: fixed;
+        inset: 0;
+        z-index: 9;
+        cursor: col-resize;
+      }
+      .dragging-guard.active {
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container" id="container">
+      <iframe
+        id="master"
+        src="https://n.maps.yandex.ru/"
+        allow="geolocation; clipboard-write"
+        title="Яндекс НК (Master)"
+      ></iframe>
+
+      <div
+        class="divider"
+        id="divider"
+        role="separator"
+        aria-label="Изменить ширину панелей"
+        tabindex="0"
+      ></div>
+
+      <iframe
+        id="slave"
+        allow="geolocation; clipboard-write"
+        title="Nakarte (Slave)"
+      ></iframe>
+    </div>
+
+    <div class="dragging-guard" id="guard"></div>
+
+    <script src="split.js"></script>
+  </body>
+</html>
