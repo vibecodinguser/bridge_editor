@@ -7,7 +7,6 @@ export default defineConfig({
       "Syncs navigation, zoom and cursor between Яндекс.НК and Nakarte.me",
     version: "1.0.0",
     permissions: [
-      "tabs",
       "storage",
       "system.display",
       "declarativeNetRequest",
