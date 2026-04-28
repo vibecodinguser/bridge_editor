@@ -1,7 +1,3 @@
-/**
- * Returns a throttled version of `fn` that fires at most once per `limitMs`.
- * Uses the leading-edge call and discards intermediate calls.
- */
 export const throttle = <T extends (...args: never[]) => void>(
   fn: T,
   limitMs: number

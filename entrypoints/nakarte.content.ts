@@ -1,8 +1,5 @@
 import type { BridgeMessage, Viewport } from "../lib/messages"
-import {
-  mergeNakarteViewport,
-  extractNakarteLayers,
-} from "../lib/nakarte-url"
+import { mergeNakarteViewport, extractNakarteLayers } from "../lib/nakarte-url"
 import { geoToPixelOffset } from "../lib/geo-pixel"
 
 export default defineContentScript({
@@ -12,20 +9,15 @@ export default defineContentScript({
   main() {
     let currentViewport: Viewport | null = null
 
-    // ── Frame registration ──────────────────────────────────────────────────
-
     const register = () =>
       chrome.runtime.sendMessage({ type: "frameRegister", role: "slave" }).catch(() => {})
 
     void register()
-    // Re-register once the page finishes loading (covers the SW-restart case)
     if (document.readyState !== "complete") {
       window.addEventListener("load", () => {
         void register()
       })
     }
-
-    // ── Viewport sync ───────────────────────────────────────────────────────
 
     const applyViewport = (vp: Viewport) => {
       currentViewport = vp
@@ -37,9 +29,6 @@ export default defineContentScript({
         return
       }
 
-      // replaceState changes location.href but does NOT fire hashchange natively.
-      // We fire it manually with the correct oldURL/newURL so nakarte's internal
-      // listener can read both event properties and window.location.hash.
       history.replaceState(null, "", newUrl)
       window.dispatchEvent(
         new HashChangeEvent("hashchange", {
@@ -49,11 +38,8 @@ export default defineContentScript({
         })
       )
 
-      console.debug("[bridge-nakarte] viewport applied:", vp)
       updateOverlay()
     }
-
-    // ── Layer persistence ───────────────────────────────────────────────────
 
     const persistLayers = () => {
       const layers = extractNakarteLayers(location.href)
@@ -62,13 +48,8 @@ export default defineContentScript({
       }
     }
 
-    // Listen for hash changes that nakarte itself makes (layer toggles, etc.)
-    // Use a native listener BEFORE we wrap history, so we don't double-fire.
     window.addEventListener("hashchange", persistLayers, { passive: true })
 
-    // Wrap history to also catch programmatic updates inside nakarte's JS.
-    // We intentionally do NOT persist layers when WE call replaceState (to
-    // avoid a feedback loop), so we guard with a flag.
     let applyingViewport = false
 
     const originalReplaceState = history.replaceState.bind(history)
@@ -83,10 +64,7 @@ export default defineContentScript({
       if (!applyingViewport) persistLayers()
     }
 
-    // Persist on initial load
     persistLayers()
-
-    // ── Cursor overlay ──────────────────────────────────────────────────────
 
     const overlay = createOverlay()
 
@@ -109,8 +87,6 @@ export default defineContentScript({
       overlay.style.top = `${window.innerHeight / 2 + dy}px`
       overlay.style.display = "block"
     }
-
-    // ── Message listener ────────────────────────────────────────────────────
 
     chrome.runtime.onMessage.addListener((rawMsg: unknown) => {
       const msg = rawMsg as BridgeMessage
@@ -137,8 +113,6 @@ export default defineContentScript({
     })
   },
 })
-
-// ── Overlay factory ─────────────────────────────────────────────────────────
 
 const createOverlay = (): HTMLElement => {
   const el = document.createElement("div")

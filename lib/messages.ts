@@ -1,11 +1,9 @@
-/** Geographic viewport extracted from Yandex NK URL */
 export interface Viewport {
   lat: number
   lon: number
   z: number
 }
 
-/** Geographic position of the cursor, derived via Web Mercator math */
 export interface CursorGeo {
   lat: number
   lon: number

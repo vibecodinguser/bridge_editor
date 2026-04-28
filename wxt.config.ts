@@ -1,11 +1,18 @@
 import { defineConfig } from "wxt"
 
+const icons = {
+  "16": "icons/icon16.png",
+  "32": "icons/icon32.png",
+  "48": "icons/icon48.png",
+  "128": "icons/icon128.png",
+}
+
 export default defineConfig({
   manifest: {
     name: "Bridge Editor",
     description:
-      "Syncs navigation, zoom and cursor between Яндекс.НК and Nakarte.me",
-    version: "1.0.0",
+      "Bridge Editor for Яндекс.НК and Nakarte.me",
+    version: "1.0.1",
     permissions: [
       "storage",
       "system.display",
@@ -28,18 +35,8 @@ export default defineConfig({
     },
     action: {
       default_title: "Bridge Editor: open split view",
-      default_icon: {
-        "16": "icons/icon16.png",
-        "32": "icons/icon32.png",
-        "48": "icons/icon48.png",
-        "128": "icons/icon128.png",
-      },
+      default_icon: icons,
     },
-    icons: {
-      "16": "icons/icon16.png",
-      "32": "icons/icon32.png",
-      "48": "icons/icon48.png",
-      "128": "icons/icon128.png",
-    },
+    icons,
   },
 })
